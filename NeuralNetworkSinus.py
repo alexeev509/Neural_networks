@@ -108,6 +108,8 @@ for epoch_index in range(2000):
 
     optimizer.step()
 
+plt.show()
+
 predict(sine_net, x_validation, y_validation)
 
 plt.show()
