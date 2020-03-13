@@ -1,6 +1,6 @@
 dictionary = {}
-n = int(input())
 list = []
+list_of_answers = []
 
 
 class question:
@@ -9,21 +9,19 @@ class question:
         self.child = child
 
 
-for i in range(n):
-    class_description = input().split()
-    class_name = class_description[0]
-    class_parents = class_description[2:]
-    dictionary[class_name] = class_parents
-
-print(dictionary)
-
-q = int(input())
-
-for i in range(q):
-    ques = input().split()
-    parent = ques[0]
-    child = ques[1]
-    list.append(question(parent, child))
+def enterInputValues():
+    n = int(input())
+    for i in range(n):
+        class_description = input().split()
+        class_name = class_description[0]
+        class_parents = class_description[2:]
+        dictionary[class_name] = class_parents
+    q = int(input())
+    for i in range(q):
+        ques = input().split()
+        parent = ques[0]
+        child = ques[1]
+        list.append(question(parent, child))
 
 
 def searchParent(node, current):
@@ -37,8 +35,20 @@ def searchParent(node, current):
             searchParent(node, n)
 
 
-for node in list:
-    if (searchParent(node, node.child) != None):
-        print("Yes")
-    else:
-        print("No")
+def search_parents_of_classes():
+    for node in list:
+        if (searchParent(node, node.child) != None):
+            list_of_answers.append("Yes")
+        else:
+            list_of_answers.append("No")
+    return list_of_answers
+
+
+def print_result():
+    for answer in list_of_answers:
+        print(answer)
+
+# enterInputValues()
+# print(dictionary)
+# search_parents_of_classes()
+# print_result()
