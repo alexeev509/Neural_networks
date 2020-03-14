@@ -72,6 +72,45 @@ class TestUM(unittest.TestCase):
         "classH classL"
     ]
 
+    test_input_for_test_inheritance_3 = [
+        "2",
+
+        "A : C B",
+
+        "B : D E",
+
+        "1",
+
+        "E A"
+    ]
+
+    test_input_for_test_inheritance_4 = [  # список введённых строк
+        '12',
+        'G : F',
+        # сначала отнаследуем от F, потом его объявим, корректный алгоритм все равно правильно обойдёт граф, независимо что было раньше: наследование или объявление
+        'A',
+        'B : A',
+        'C : A',
+        'D : B C',
+        'E : D',
+        'F : D',
+        # а теперь другая ветка наследования
+        'X',
+        'Y : X A',  # свяжем две ветки наследования для проверки, обошла ли рекурсия предков Z и предков Y в поисках A
+        'Z : X',
+        'V : Z Y',
+        'W : V',
+        '8',
+        'A G',  # Yes   # A предок G через B/C, D, F
+        'A Z',  # No    # Y потомок A, но не Y
+        'A W',  # Yes   # A предок W через Y, V
+        'X W',  # Yes   # X предок W через Y, V
+        'X QWE',  # No    # нет такого класса QWE
+        'A X',  # No    # классы есть, но они нет родства :)
+        'X X',  # Yes   # родитель он же потомок
+        '1 1',  # No    # несуществующий класс
+    ]
+
     def test_example(self):
         self.assertEqual(3 * 4, 12)
 
@@ -126,6 +165,31 @@ class TestUM(unittest.TestCase):
             "No",
             "Yes",
             "Yes",
+            "Yes",
+            "No"
+        ]
+        inheritance_proj.enterInputValues()
+        actual = inheritance_proj.search_parents_of_classes()
+        self.assertListEqual(expected, actual)
+
+    @patch('builtins.input', MagicMock(side_effect=test_input_for_test_inheritance_3))
+    def test_inheritance_3(self):
+        expected = [
+            "Yes"
+        ]
+        inheritance_proj.enterInputValues()
+        actual = inheritance_proj.search_parents_of_classes()
+        self.assertListEqual(expected, actual)
+
+    @patch('builtins.input', MagicMock(side_effect=test_input_for_test_inheritance_4))
+    def test_inheritance_4(self):
+        expected = [
+            "Yes",
+            "No",
+            "Yes",
+            "Yes",
+            "No",
+            "No",
             "Yes",
             "No"
         ]

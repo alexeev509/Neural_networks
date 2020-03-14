@@ -25,6 +25,8 @@ def enterInputValues():
 
 
 def searchParent(node, current):
+    if (current not in dictionary.keys()):
+        return
     parentsOfCurrentNode = dictionary[current]
     if (parentsOfCurrentNode.__len__() == 0):
         return
@@ -32,12 +34,15 @@ def searchParent(node, current):
         if (n == node.parent):
             return n
         else:
-            searchParent(node, n)
+            result = searchParent(node, n)
+            if (result == node.parent):
+                return result
 
 
 def search_parents_of_classes():
     for node in list:
-        if (searchParent(node, node.child) != None):
+        # BidloKod :)
+        if (searchParent(node, node.child) != None or (node.parent == node.child and node.parent in dictionary.keys())):
             list_of_answers.append("Yes")
         else:
             list_of_answers.append("No")
